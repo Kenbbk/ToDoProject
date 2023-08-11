@@ -21,46 +21,25 @@ class MainVC: UIViewController {
     let green = UIColor(red: 25/255, green: 90/255, blue: 59/255, alpha: 1)
     
     private var black = UIColor(red: 32/255, green: 32/255, blue: 32/255, alpha: 1)
-        
+    
     
     private lazy var tableView: UITableView = {
-       let tb = UITableView()
+        let tb = UITableView()
         tb.register(MarkCell.self, forCellReuseIdentifier: MarkCell.identifier)
         tb.backgroundColor = .clear
         tb.delegate = self
         tb.dataSource = self
-//        tb.isScrollEnabled = false
+        //        tb.isScrollEnabled = false
         return tb
     }()
     
     var gradientView: UIView!
     
     private let toDoView: UIView = {
-       let view = UIView()
+        let view = UIView()
         view.backgroundColor = .black
         return view
     }()
-    
-    var items: [UIAction] {
-        
-        let save = UIAction(
-            title: "Save",
-            image: UIImage(systemName: "plus"),
-            handler: { [unowned self] _ in
-//                self.label.text = "Save"
-            })
-
-        let delete = UIAction(
-            title: "Delete",
-            image: UIImage(systemName: "trash"),
-            handler: { [unowned self] _ in
-//                self.label.text = "Delete"
-            })
-
-        let Items = [save, delete]
-
-        return Items
-    }
     
     //MARK: - Lifecycle
     
@@ -73,11 +52,17 @@ class MainVC: UIViewController {
     
     //MARK: - Actions
     
-    @objc func tapped() {
-        number += 1
-        print(number)
+    //MARK: - Helpers
+    
+    private func pushToNextVC(row: Int) {
+        
+        let vc = row == 0 ? ToDoVC(toDoRepository: toDoRepository) : DoneVC(toDoRepository: toDoRepository)
+        
+        navigationController?.pushViewController(vc, animated: true)
     }
     
+    
+    //MARK: - UI
     private func configureTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -104,34 +89,10 @@ class MainVC: UIViewController {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = view.bounds
         gradientLayer.colors = [green.cgColor, gray.cgColor]
-            gradientView.layer.addSublayer(gradientLayer)
+        gradientView.layer.addSublayer(gradientLayer)
         view.addSubview(gradientView)
     }
-    
-    private func makeGrandient() {
-        
-        
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = view.bounds
-        gradientLayer.colors = [green.cgColor, gray.cgColor]
-            view.layer.addSublayer(gradientLayer)
-        
-    }
-    
-    private func pushToNextVC(row: Int) {
-        
-        if row == 0 {
-            let vc = ToDoVC(toDoRepository: toDoRepository)
-            navigationController?.pushViewController(vc, animated: true)
-        } else {
-            let vc = DoneVC()
-            navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-    
-    //MARK: - Helpers
 }
-
 
 extension MainVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

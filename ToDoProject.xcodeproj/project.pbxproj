@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		D67A537C2A84BC0600C0AD2D /* MarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A537B2A84BC0600C0AD2D /* MarkView.swift */; };
 		D67A537E2A84BF5A00C0AD2D /* MarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A537D2A84BF5A00C0AD2D /* MarkCell.swift */; };
 		D67A53812A84DDAB00C0AD2D /* TodoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A53802A84DDAB00C0AD2D /* TodoRepository.swift */; };
 		D67A53842A84E02A00C0AD2D /* SortingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A53832A84E02A00C0AD2D /* SortingService.swift */; };
@@ -16,6 +15,10 @@
 		D67A538B2A85425400C0AD2D /* OptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A538A2A85425400C0AD2D /* OptionCell.swift */; };
 		D67A538D2A8542C600C0AD2D /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A538C2A8542C600C0AD2D /* OptionView.swift */; };
 		D67A538F2A85E38D00C0AD2D /* Date+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A538E2A85E38D00C0AD2D /* Date+Ext.swift */; };
+		D67A53912A86258400C0AD2D /* SectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A53902A86258400C0AD2D /* SectionService.swift */; };
+		D67A53932A86265200C0AD2D /* ItemService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A53922A86265200C0AD2D /* ItemService.swift */; };
+		D67A53952A864A5E00C0AD2D /* Array+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A53942A864A5E00C0AD2D /* Array+Ext.swift */; };
+		D67A53972A868E1B00C0AD2D /* Calendar+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A53962A868E1B00C0AD2D /* Calendar+Ext.swift */; };
 		D6EEC3032A849BC800DA751C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEC3022A849BC800DA751C /* AppDelegate.swift */; };
 		D6EEC3052A849BC800DA751C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEC3042A849BC800DA751C /* SceneDelegate.swift */; };
 		D6EEC30C2A849BCA00DA751C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6EEC30B2A849BCA00DA751C /* Assets.xcassets */; };
@@ -27,7 +30,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		D67A537B2A84BC0600C0AD2D /* MarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkView.swift; sourceTree = "<group>"; };
 		D67A537D2A84BF5A00C0AD2D /* MarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCell.swift; sourceTree = "<group>"; };
 		D67A53802A84DDAB00C0AD2D /* TodoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRepository.swift; sourceTree = "<group>"; };
 		D67A53832A84E02A00C0AD2D /* SortingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SortingService.swift; sourceTree = "<group>"; };
@@ -36,6 +38,10 @@
 		D67A538A2A85425400C0AD2D /* OptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCell.swift; sourceTree = "<group>"; };
 		D67A538C2A8542C600C0AD2D /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
 		D67A538E2A85E38D00C0AD2D /* Date+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Ext.swift"; sourceTree = "<group>"; };
+		D67A53902A86258400C0AD2D /* SectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionService.swift; sourceTree = "<group>"; };
+		D67A53922A86265200C0AD2D /* ItemService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemService.swift; sourceTree = "<group>"; };
+		D67A53942A864A5E00C0AD2D /* Array+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Ext.swift"; sourceTree = "<group>"; };
+		D67A53962A868E1B00C0AD2D /* Calendar+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Ext.swift"; sourceTree = "<group>"; };
 		D6EEC2FF2A849BC800DA751C /* ToDoProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6EEC3022A849BC800DA751C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6EEC3042A849BC800DA751C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,7 +68,6 @@
 		D67A537A2A84BBF700C0AD2D /* CustomView */ = {
 			isa = PBXGroup;
 			children = (
-				D67A537B2A84BC0600C0AD2D /* MarkView.swift */,
 				D67A537D2A84BF5A00C0AD2D /* MarkCell.swift */,
 				D67A53882A84E44900C0AD2D /* ToDoCell.swift */,
 				D67A538A2A85425400C0AD2D /* OptionCell.swift */,
@@ -83,6 +88,8 @@
 			isa = PBXGroup;
 			children = (
 				D67A53832A84E02A00C0AD2D /* SortingService.swift */,
+				D67A53902A86258400C0AD2D /* SectionService.swift */,
+				D67A53922A86265200C0AD2D /* ItemService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -92,6 +99,8 @@
 			children = (
 				D67A53862A84E2CC00C0AD2D /* String+Ext.swift */,
 				D67A538E2A85E38D00C0AD2D /* Date+Ext.swift */,
+				D67A53942A864A5E00C0AD2D /* Array+Ext.swift */,
+				D67A53962A868E1B00C0AD2D /* Calendar+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -226,17 +235,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D67A537C2A84BC0600C0AD2D /* MarkView.swift in Sources */,
 				D6EEC3032A849BC800DA751C /* AppDelegate.swift in Sources */,
 				D6EEC3182A849C5100DA751C /* MainVC.swift in Sources */,
 				D67A538B2A85425400C0AD2D /* OptionCell.swift in Sources */,
 				D6EEC31A2A849C6100DA751C /* DoneVC.swift in Sources */,
+				D67A53912A86258400C0AD2D /* SectionService.swift in Sources */,
+				D67A53932A86265200C0AD2D /* ItemService.swift in Sources */,
 				D67A537E2A84BF5A00C0AD2D /* MarkCell.swift in Sources */,
 				D6EEC31F2A849CB700DA751C /* ToDo.swift in Sources */,
 				D67A538D2A8542C600C0AD2D /* OptionView.swift in Sources */,
 				D6EEC31C2A849C7200DA751C /* ToDoVC.swift in Sources */,
 				D67A538F2A85E38D00C0AD2D /* Date+Ext.swift in Sources */,
+				D67A53952A864A5E00C0AD2D /* Array+Ext.swift in Sources */,
 				D67A53892A84E44900C0AD2D /* ToDoCell.swift in Sources */,
+				D67A53972A868E1B00C0AD2D /* Calendar+Ext.swift in Sources */,
 				D6EEC3052A849BC800DA751C /* SceneDelegate.swift in Sources */,
 				D67A53842A84E02A00C0AD2D /* SortingService.swift in Sources */,
 				D67A53812A84DDAB00C0AD2D /* TodoRepository.swift in Sources */,

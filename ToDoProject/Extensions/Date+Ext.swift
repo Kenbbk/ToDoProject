@@ -19,6 +19,16 @@ extension Date {
         return dateformatter.string(from: self)
         
     }
+    
+    func getStartOfDay() -> Date {
+        let calendar = Calendar.KoreanCalendar
+        return calendar.startOfDay(for: self)
+    }
 }
 
-
+extension Array {
+    
+    func append() {
+        
+    }
+}

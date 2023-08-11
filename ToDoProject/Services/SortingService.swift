@@ -9,7 +9,6 @@ import Foundation
 
 class SortingService {
     
-    func sortInDateOrder(toDoList: [Todo]) -> [Todo] {
-        return toDoList.sorted { $0.date > $1.date}
-    }
+    
+    
 }

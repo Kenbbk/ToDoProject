@@ -18,6 +18,11 @@ class TodoRepository {
         toDoList.append(toDo)
     }
     
+    func getAllList() -> [Todo] {
+        toDoList.forEach { print($0.uuid) }
+        return toDoList
+    }
+    
     func getFillterAndSorted() -> [Todo] {
         return toDoList
             .filter { $0.done == false }

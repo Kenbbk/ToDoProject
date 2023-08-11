@@ -8,22 +8,23 @@
 import UIKit
 
 class ToDoVC: UIViewController {
+    
+    
     //MARK: - Properties
-    
-    private var toDoRepository: TodoRepository!
-    
-    private var localRepo: [Todo] = []
-    
-    enum Row {
-        case todo(Todo)
-        case date(Todo)
-    }
     
     var section: [String] = []
     
-//    enum Section {
-//        case main
-//    }
+    private var toDoRepository: TodoRepository!
+    
+    private var localRepo: [Todo] = [] {
+        didSet {
+            print("Sorted")
+            self.localRepo.sort { $0.date > $1.date }
+            applySnapShot()
+        }
+    }
+    
+    
     
     private lazy var optionView: OptionView = {
         let optionView = OptionView(frame: UIScreen.main.bounds)
@@ -34,6 +35,7 @@ class ToDoVC: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tb = UITableView(frame: .zero, style: .grouped)
+        
         tb.delegate = self
         tb.register(ToDoCell.self, forCellReuseIdentifier: ToDoCell.identifier)
         tb.rowHeight = 60
@@ -43,17 +45,18 @@ class ToDoVC: UIViewController {
     
     var datasource: UITableViewDiffableDataSource<String, Todo>!
     
-  
+    
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         title = "할일"
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "할일 추가", style: .plain, target: self, action: #selector(addButtopTapped))
         view.backgroundColor = .systemCyan
         configureTableView()
-        configureDataSource()
-        applySnapshot()
         configureOptionView()
+        configureDataSource()
+        applySnapShot()
         
     }
     
@@ -76,8 +79,8 @@ class ToDoVC: UIViewController {
         let confirmAction = UIAlertAction(title: "확인", style: .default) { action in
             let Todo = Todo(title: textField.text!)
             self.toDoRepository.addToDo(toDo: Todo)
-//            self.localRepo.append(Todo)
-            self.applyOldSnapshot(toDo: Todo)
+            self.localRepo.append(Todo)
+            
         }
         let cancelAction = UIAlertAction(title: "취소", style: .default)
         
@@ -91,7 +94,7 @@ class ToDoVC: UIViewController {
     
     private func configureOptionView() {
         UIApplication.shared.keyWindow?.addSubview(optionView)
-//        view.addSubview(optionView)
+        //        view.addSubview(optionView)
         view.bringSubviewToFront(optionView)
     }
     private func configureTableView() {
@@ -116,102 +119,108 @@ class ToDoVC: UIViewController {
             print("clups",cell.clipsToBounds)
             return cell
         })
+        
     }
     
-    private func applySnapshot() {
+    private func applySnapShot() {
         
         var snapshot = NSDiffableDataSourceSnapshot<String, Todo>()
-        // todo 배열 사용해서 section만 리턴 스트링으로 포맷된 데이트
-        let set = Set(localRepo.map { $0.date.convertToString() })
-        section = Array(set).sorted(by: >)
-        
-        // 이것을 이용해서 snapshot.appendsection 다집어넣고
+        section = SectionService().makeStringSection(toDos: localRepo)
         snapshot.appendSections(section)
         
-    // todo 데이트순에 따라 정렬 loop map { ($0 , $0.dsf )}
-        // tuple  -> [(String , [Todo] )]
-        for toDo in localRepo {
-            let stringDate = toDo.date.convertToString()
-           
+        let tupleResult = ItemService().makeItemIdentifier(toDos: localRepo)
+        for (toDo, stringDate) in tupleResult {
             snapshot.appendItems([toDo], toSection: stringDate)
-            
         }
         
-//        snapshot.appendSections([]) // <-
-        
-        
-//        let toDoList = toDoRepository.getFillterAndSorted()
-//        snapshot.appendItems([todo], toSection: "sdfkjlsjl")
-//        snapshot.appendItems(toDoList)
         datasource.apply(snapshot)
     }
     
-    private func applyOldSnapshot(toDo: Todo) {
-        var oldSnapshot = datasource.snapshot()
-        let stringDate = toDo.date.convertToString()
-        
-        if section.contains(stringDate) {
-            oldSnapshot.insertItems([toDo], beforeItem: localRepo[0])
-            
-            
-            
-        } else {
-            if section.isEmpty {
-                oldSnapshot.appendSections([stringDate])
-                oldSnapshot.appendItems([toDo], toSection: stringDate)
-            } else {
-                
-                oldSnapshot.insertSections([stringDate], beforeSection: section[0] )
-                oldSnapshot.appendItems([toDo], toSection: stringDate)
-                section.insert(stringDate, at: 0)
-            }
-            
-            
-        }
-        
-        localRepo.insert(toDo, at: 0)
-        datasource.apply(oldSnapshot)
-    }
+//    private func updateSnapshot() {
+//        var snapshot = NSDiffableDataSourceSnapshot<String, Todo>()
+//        let sectionString = SectionService().makeStringSection(toDos: localRepo)
+//        section = sectionString
+//        snapshot.appendSections(section)
+//
+//
+//    }
+    
+    //    private func applyOldSnapshot(toDo: Todo) {
+    //        var oldSnapshot = datasource.snapshot()
+    //        let tuple = ItemService().makeItemIdentifier(toDo: toDo)
+    //
+    //        if oldSnapshot.sectionIdentifiers.contains(tuple.1) {
+    //
+    //            if let first = oldSnapshot.itemIdentifiers(inSection: tuple.1).first {
+    //                oldSnapshot.insertItems([toDo], beforeItem: first)
+    //            }
+    //
+    //        } else {
+    //
+    //            if let first = oldSnapshot.sectionIdentifiers.first {
+    //
+    //                print(tuple.1)
+    ////                oldSnapshot.appendSections([tuple.1])
+    //
+    //                oldSnapshot.insertSections([tuple.1], beforeSection: first)
+    //                oldSnapshot.appendItems([toDo], toSection: tuple.1)
+    //                print("1")
+    //            } else {
+    //
+    //                oldSnapshot.appendSections([tuple.1])
+    //                oldSnapshot.appendItems([toDo], toSection: tuple.1)
+    //                print("2")
+    //            }
+    //
+    //        }
+    //
+    //        section.insert(tuple.1, at: 0)
+    ////        if let first = oldSnapshot.itemIdentifiers.first {
+    ////            oldSnapshot.insertItems([toDo], beforeItem: first)
+    ////        } else {
+    ////            oldSnapshot.appendItems([toDo])
+    ////        }
+    //
+    //        datasource.apply(oldSnapshot)
+    //    }
+    //
+    //
+    //}
 }
-
 extension ToDoVC: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         print("Row Tapped")
     }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UITableViewHeaderFooterView()
+        guard !datasource.snapshot().sectionIdentifiers.isEmpty else { return nil }
+        print(self.section)
+        //        view.textLabel?.text = self.section[section]
+        view.textLabel?.text = datasource.snapshot().sectionIdentifiers[section]
+        return view
+    }
+    
 }
 
 extension ToDoVC: ToDoCellDelegate {
     func optionTapped(sender: ToDoCell, cgPoint: CGPoint) {
         print("Tapped")
         guard let index = self.tableView.indexPath(for: sender) else { return }
-        let toDo = localRepo[index.row]
-        toDoRepository.checkToggle(toDo: toDo)
+        
+//        let toDo = localRepo[index.row]
+        let toDo = datasource.snapshot().itemIdentifiers(inSection: datasource.snapshot().sectionIdentifiers[index.section])[index.row]
+//        let toDo = datasource.snapshot().itemIdentifiers(inSection: a)[index.row]
+        print(index.section)
+//        toDoRepository.checkToggle(toDo: toDo)
+        toDo.done.toggle()
+        toDo.doneDate = Date()
+        print(toDo.uuid, toDo.done, toDo.doneDate)
+                
         optionView.location = cgPoint
         optionView.isHidden = false
-        
     }
-    
-
-    
-    //    func optionTapped(toDo: Todo) {
-    //        print("I am tapped")
-    //        toDoRepository.checkToggle(toDo: toDo)
-    //        var oldSnapshot = datasource.snapshot()
-    //
-    ////        var snapshot = NSDiffableDataSourceSnapshot<Section, Todo>()
-    ////        snapshot.appendSections([.main])
-    ////        let toDoList = toDoRepository.getToDoList()
-    ////
-    ////        snapshot.appendItems(toDoList)
-    ////        datasource.apply(snapshot)
-    ////
-    //        oldSnapshot.reconfigureItems([toDo])
-    //////        oldSnapshot.reloadItems([changedTodo!])
-    //        datasource.apply(oldSnapshot)
-    //    }
-    
-    
-    
 }
 
 extension ToDoVC: OptionViewDelegate {

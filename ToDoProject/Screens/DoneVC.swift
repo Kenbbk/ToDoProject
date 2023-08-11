@@ -9,88 +9,104 @@ import UIKit
 
 class DoneVC: UIViewController {
     
-    let button: UIButton = {
-        let button =  UIButton(frame: CGRect(x: 150, y: 200, width: 100, height: 40))
-        button.backgroundColor = .gray
-        button.layer.cornerRadius = 10
-        button.setTitle("Button", for: .normal)
-        return button
-    }()
+    //MARK: - Properties
     
-    let label: UILabel = {
-        let label = UILabel(frame: CGRect(x: 150, y: 400, width: 100, height: 40))
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
-    }()
+    private var toDoRepository: TodoRepository!
     
-    var items: [UIAction] {
-        
-        let save = UIAction(
-            title: "Save",
-            image: UIImage(systemName: "plus"),
-            handler: { [unowned self] _ in
-                self.label.text = "Save"
-            })
-        
-        let delete = UIAction(
-            title: "Delete",
-            image: UIImage(systemName: "trash"),
-            handler: { [unowned self] _ in
-                self.label.text = "Delete"
-            })
-        
-        let Items = [save, delete]
-        
-        return Items
+    private var localRepo: [Todo] = [] {
+        didSet {
+            print("local repo Set")
+            self.localRepo.sort { $0.doneDate! > $1.doneDate! }
+            print(self.localRepo)
+        }
     }
     
-    let myView = UIView(frame: CGRect(x: 50, y: 300, width: 100, height: 100))
+    private lazy var tableView: UITableView = {
+        let tb = UITableView(frame: .zero, style: .grouped)
+        tb.register(ToDoCell.self, forCellReuseIdentifier: ToDoCell.identifier)
+        tb.delegate = self
+        return tb
+    }()
+    
+    private var section: [String] = [] 
+        
+            
+        
+    
+    
+    private var dataSource: UITableViewDiffableDataSource<String, Todo>!
+    
+    //MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        view.addSubview(myView)
-        myView.backgroundColor = .white
-        myView.layer.shadowColor = UIColor.black.cgColor
-        myView.layer.shadowOpacity = 1
-        myView.layer.shadowRadius = 1
-        myView.layer.shadowOffset = .zero
-        myView.layer.shadowPath = nil
-        print(myView.layer.masksToBounds)
-        
-        //        view.addSubview(button)
-        //               view.addSubview(label)
-        //
-        ////        let interaction = UIContextMenuInteraction(delegate: self)
-        //          // 버튼의 상호작용을 추가해줍니다.
-        ////          button.addInteraction(interaction)
-        //        setupMenu()
+        configureTableView()
+        configureDatasource()
+        applyNewSnapshot()
     }
     
-    //    func setupMenu() {
-    //        let menu = UIMenu(title: "메뉴",
-    //                          children: items)
-    //
-    //        button.menu = menu
-    ////        button.showsMenuAsPrimaryAction = true
-    //    }
-    //
-    //    @objc func buttonHandler(_ sender: UIButton) {
-    //      }
-    //}
+    init(toDoRepository: TodoRepository) {
+        super.init(nibName: nil, bundle: nil)
+        
+        print("I am innited")
+        self.toDoRepository = toDoRepository
+        self.localRepo = toDoRepository.getAllList().filter { $0.done == true }
+        
+        
+        
+    }
     
-    //extension DoneVC: UIContextMenuInteractionDelegate {
-    //
-    //    func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-    //
-    //        return UIContextMenuConfiguration(actionProvider:  { [unowned self] suggestedActions in
-    //
-    //            let menu = UIMenu(title: "메뉴1",
-    //                              children: self.items)
-    //
-    //            return menu
-    //        })
-    //    }
-    //}
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    //MARK: - Actions
+    
+    //MARK: - Helpers
+    
+    private func configureDatasource() {
+        dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, itemIdentifier in
+            let cell = UITableViewCell()
+            cell.textLabel?.text = itemIdentifier.title
+            return cell
+        })
+    }
+    
+    private func applyNewSnapshot() {
+        
+        var snapshot = NSDiffableDataSourceSnapshot<String, Todo>()
+        
+        section = SectionService().makeDoneSection(toDos: localRepo)
+        
+        snapshot.appendSections(section)
+        
+        let tupleResult = ItemService().makeDoneItemIdentifier(toDos: localRepo)
+        
+        for (item, sectionString) in tupleResult {
+            snapshot.appendItems([item], toSection: sectionString)
+        }
+
+        dataSource.apply(snapshot)
+    }
+    //MARK: - UI
+    
+    private func configureTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+}
+
+extension DoneVC: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view = UITableViewHeaderFooterView()
+        view.textLabel?.text = self.section[section]
+        return view
+    }
 }

@@ -12,6 +12,7 @@ class Todo: Codable, Equatable, Hashable {
     var done: Bool
     let date: Date
     let uuid: String
+    var doneDate: Date?
     
     
     init(title: String, done: Bool = false, date: Date = Date(), uuid: String = UUID().uuidString) {
