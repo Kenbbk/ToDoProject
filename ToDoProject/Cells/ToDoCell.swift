@@ -33,7 +33,7 @@ class ToDoCell: UITableViewCell {
     let label: UILabel = {
         let label = UILabel()
         label.text = "Todo"
-        label.textColor = .black
+        label.textColor = UIColor(red: 96/255, green: 96/255, blue: 96/255, alpha: 1)
         label.font = UIFont.systemFont(ofSize: 19)
         
         
