@@ -37,16 +37,17 @@ class ToDoVC: UIViewController {
         tb.delegate = self
         tb.register(ToDoCell.self, forCellReuseIdentifier: ToDoCell.identifier)
         tb.rowHeight = 60
-        
+
         return tb
     }()
     
-    private lazy var datasource: UITableViewDiffableDataSource<String, Todo> = {
+   private lazy var datasource: UITableViewDiffableDataSource<String, Todo> = {
         let dataSource = UITableViewDiffableDataSource<String, Todo>(tableView: tableView) { tableView, indexPath, itemIdentifier in
             let cell = tableView.dequeueReusableCell(withIdentifier: ToDoCell.identifier, for: indexPath) as! ToDoCell
             
             cell.delegate = self
             cell.label.attributedText = NSAttributedString(string: itemIdentifier.title)
+            
             
             return cell
         }
@@ -73,6 +74,7 @@ class ToDoVC: UIViewController {
         
         configureUI()
         applySnapShot()
+        
     }
     
     //MARK: - Actions
@@ -118,6 +120,7 @@ class ToDoVC: UIViewController {
         configureRightBarButtonItem()
         configureOptionView()
         configureTableView()
+        
     }
     
     private func configureRightBarButtonItem() {
@@ -139,6 +142,8 @@ class ToDoVC: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
+    
+   
 }
 
 //MARK: - TableView Delegate
@@ -154,55 +159,93 @@ extension ToDoVC: UITableViewDelegate {
         print(self.section)
         
         view.textLabel?.text = datasource.snapshot().sectionIdentifiers[section]
+        
         return view
     }
-    
 }
 
 //MARK: - ToDoCellDelegate
 
 extension ToDoVC: ToDoCellDelegate {
-    func optionTapped(sender: ToDoCell, cgPoint: CGPoint) {
-        print("Tapped")
+    func optionTapped(sender: ToDoCell, location: CGPoint) {
         
+        showOptionView(connectedCell: sender, location: location)
         
-        
-//        let toDo = datasource.snapshot().itemIdentifiers(inSection: datasource.snapshot().sectionIdentifiers[index.section])[index.row]
-        
-//        print(index.section)
-        
-//        toDo.done.toggle()
-//        toDo.doneDate = Date()
-//        print(toDo.uuid, toDo.done, toDo.doneDate)
-        
-        optionView.location = cgPoint
-        optionView.isHidden = false
-        optionView.connectedCell = sender
     }
 }
 
 //MARK: - OptionView Delegate
 extension ToDoVC: OptionViewDelegate {
     func optionTableTapped(row: Int, connectedCell: ToDoCell) {
-        guard let index = self.tableView.indexPath(for: connectedCell) else { return }
-        let toDo = datasource.snapshot().itemIdentifiers(inSection: datasource.snapshot().sectionIdentifiers[index.section])[index.row]
+        
+        let toDo = getSelectedToDo(connectedCell: connectedCell)
         
         if case 0 = row {
-            toDo.done.toggle()
-            toDo.doneDate = Date()
-            connectedCell.isDone.toggle()
+           
+            toggleDone(on: toDo, with: connectedCell)
         }
         if case 1 = row {
-            print(1)
+            
+            showEditAlert(on: toDo, with: connectedCell)
+
         }
         if case 2 = row {
-            print(2)
+            
+            removeToDo(toDo)
+            
         }
-                
-                
     }
 }
 
 
+extension ToDoVC {
+    
+    private func removeFromLocalRepo(_ toDo: Todo) {
+        guard let index = localRepo.firstIndex(of: toDo) else { return }
+        
+        localRepo.remove(at: index)
+    }
+    
+    private func showEditAlert(on toDo: Todo, with connectedCell: ToDoCell) {
+        var textField: UITextField!
+        let alert = UIAlertController(title: "할일을 수정해주세요", message: nil, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "수정", style: .default) { action in
+            
+            guard let title = textField.text else { return }
+            toDo.title = title
+            connectedCell.label.attributedText = NSAttributedString(string: title)
+        }
+        let cancelAction = UIAlertAction(title: "취소", style: .default)
+        alert.addTextField { textField = $0 }
+        alert.addAction(confirmAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
+        
+    }
+    
+    private func toggleDone(on toDo: Todo, with connectedCell: ToDoCell) {
+        toDo.done.toggle()
+        toDo.doneDate = Date()
+        connectedCell.isDone.toggle()
+    }
+    
+    private func showOptionView(connectedCell: ToDoCell, location: CGPoint) {
+        
+        optionView.location = location
+        optionView.connectedCell = connectedCell
+        optionView.isHidden = false
+    }
+    
+    private func removeToDo(_ toDo: Todo) {
+        toDoRepository.removeToDo(toDo)
+        removeFromLocalRepo(toDo)
+    }
+    
+    private func getSelectedToDo(connectedCell: ToDoCell) -> Todo {
+        guard let index = self.tableView.indexPath(for: connectedCell) else { fatalError( "There is no such Todo") }
+        let toDo = datasource.snapshot().itemIdentifiers(inSection: datasource.snapshot().sectionIdentifiers[index.section])[index.row]
+        return toDo
+    }
+}
 
 

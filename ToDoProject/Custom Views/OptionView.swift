@@ -30,7 +30,7 @@ class OptionView: UIView {
     
     var location = CGPoint() {
         didSet {
-            containerView.frame = CGRect(x: location.x - 90, y: location.y, width: 120, height: 150)
+            containerView.frame = CGRect(x: location.x - 84, y: location.y, width: 120, height: 150)
         }
     }
     

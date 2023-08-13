@@ -18,6 +18,11 @@ class TodoRepository {
         toDoList.append(toDo)
     }
     
+    func removeToDo(_ toDo: Todo) {
+        guard let index = toDoList.firstIndex(of: toDo) else { return }
+        toDoList.remove(at: index)
+    }
+    
     func getAllList() -> [Todo] {
         toDoList.forEach { print($0.uuid) }
         return toDoList
@@ -33,8 +38,8 @@ class TodoRepository {
         return toDoList.filter { $0.done == true }
     }
     
-    func checkToggle(toDo: Todo) {
-        guard let index = toDoList.firstIndex(of: toDo) else { return }
-        toDoList[index].done.toggle()
-    }
+//    func checkToggle(toDo: Todo) {
+//        guard let index = toDoList.firstIndex(of: toDo) else { return }
+//        toDoList[index].done.toggle()
+//    }
 }

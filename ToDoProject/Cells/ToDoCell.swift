@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ToDoCellDelegate: AnyObject {
-    func optionTapped(sender: ToDoCell, cgPoint: CGPoint)
+    func optionTapped(sender: ToDoCell, location: CGPoint)
 }
 
 class ToDoCell: UITableViewCell {
@@ -33,14 +33,19 @@ class ToDoCell: UITableViewCell {
     let label: UILabel = {
         let label = UILabel()
         label.text = "Todo"
-        label.textColor = .gray
+        label.textColor = .black
+        label.font = UIFont.systemFont(ofSize: 19)
+        
         
         return label
     }()
     
     private lazy var optionImageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "OptionImage")
+
+        iv.image = UIImage(systemName: "list.clipboard")
+        iv.tintColor = .gray
+
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(optionImageTapped(_:))))
         return iv
@@ -52,6 +57,7 @@ class ToDoCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         configureUI()
+        contentView.backgroundColor = .white
     }
     
     required init?(coder: NSCoder) {
@@ -63,11 +69,7 @@ class ToDoCell: UITableViewCell {
     @objc private func optionImageTapped(_ gesture: UITapGestureRecognizer) {
         
         let location = convert(optionImageView.frame.origin, to: self.superview?.superview)
-        delegate?.optionTapped(sender: self, cgPoint: location)
-        //        viewModel?.toDo
-        //
-        
-        //        label.attributedText = "asdasdad".strikeThrough()
+        delegate?.optionTapped(sender: self, location: location)
         
     }
     

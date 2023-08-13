@@ -10,12 +10,12 @@ import UIKit
 class MainVC: UIViewController {
     
     //MARK: - Properties
-    var number: CGFloat = 30
+    
     
     let toDoRepository = TodoRepository()
     
     private var gray: UIColor {
-        return UIColor(red: number/255, green: number/255, blue: number/255, alpha: 1)
+        return UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1)
     }
     
     let green = UIColor(red: 25/255, green: 90/255, blue: 59/255, alpha: 1)
@@ -29,7 +29,7 @@ class MainVC: UIViewController {
         tb.backgroundColor = .clear
         tb.delegate = self
         tb.dataSource = self
-        //        tb.isScrollEnabled = false
+                tb.isScrollEnabled = false
         return tb
     }()
     

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 extension Date {
     
@@ -26,9 +27,4 @@ extension Date {
     }
 }
 
-extension Array {
-    
-    func append() {
-        
-    }
-}
+

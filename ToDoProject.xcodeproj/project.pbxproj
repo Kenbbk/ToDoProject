@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		D67A537E2A84BF5A00C0AD2D /* MarkCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A537D2A84BF5A00C0AD2D /* MarkCell.swift */; };
 		D67A53812A84DDAB00C0AD2D /* TodoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A53802A84DDAB00C0AD2D /* TodoRepository.swift */; };
-		D67A53872A84E2CC00C0AD2D /* String+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A53862A84E2CC00C0AD2D /* String+Ext.swift */; };
 		D67A53892A84E44900C0AD2D /* ToDoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A53882A84E44900C0AD2D /* ToDoCell.swift */; };
 		D67A538B2A85425400C0AD2D /* OptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A538A2A85425400C0AD2D /* OptionCell.swift */; };
 		D67A538D2A8542C600C0AD2D /* OptionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A538C2A8542C600C0AD2D /* OptionView.swift */; };
@@ -31,7 +30,6 @@
 /* Begin PBXFileReference section */
 		D67A537D2A84BF5A00C0AD2D /* MarkCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkCell.swift; sourceTree = "<group>"; };
 		D67A53802A84DDAB00C0AD2D /* TodoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRepository.swift; sourceTree = "<group>"; };
-		D67A53862A84E2CC00C0AD2D /* String+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Ext.swift"; sourceTree = "<group>"; };
 		D67A53882A84E44900C0AD2D /* ToDoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCell.swift; sourceTree = "<group>"; };
 		D67A538A2A85425400C0AD2D /* OptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionCell.swift; sourceTree = "<group>"; };
 		D67A538C2A8542C600C0AD2D /* OptionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionView.swift; sourceTree = "<group>"; };
@@ -63,15 +61,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D67A537A2A84BBF700C0AD2D /* CustomView */ = {
+		D67A537A2A84BBF700C0AD2D /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				D67A537D2A84BF5A00C0AD2D /* MarkCell.swift */,
 				D67A53882A84E44900C0AD2D /* ToDoCell.swift */,
 				D67A538A2A85425400C0AD2D /* OptionCell.swift */,
-				D67A538C2A8542C600C0AD2D /* OptionView.swift */,
 			);
-			path = CustomView;
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		D67A537F2A84DD7800C0AD2D /* Repositories */ = {
@@ -94,12 +91,19 @@
 		D67A53852A84E2C300C0AD2D /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				D67A53862A84E2CC00C0AD2D /* String+Ext.swift */,
 				D67A538E2A85E38D00C0AD2D /* Date+Ext.swift */,
 				D67A53962A868E1B00C0AD2D /* Calendar+Ext.swift */,
 				D6804ECA2A88BC4800F23E15 /* NSAttributedString+Ext.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		D6804ECC2A88C58400F23E15 /* Custom Views */ = {
+			isa = PBXGroup;
+			children = (
+				D67A538C2A8542C600C0AD2D /* OptionView.swift */,
+			);
+			path = "Custom Views";
 			sourceTree = "<group>";
 		};
 		D6EEC2F62A849BC700DA751C = {
@@ -121,13 +125,14 @@
 		D6EEC3012A849BC800DA751C /* ToDoProject */ = {
 			isa = PBXGroup;
 			children = (
+				D6804ECC2A88C58400F23E15 /* Custom Views */,
 				D67A53852A84E2C300C0AD2D /* Extensions */,
 				D67A53822A84DE1200C0AD2D /* Services */,
-				D67A537A2A84BBF700C0AD2D /* CustomView */,
+				D67A537A2A84BBF700C0AD2D /* Cells */,
 				D6EEC31D2A849C7C00DA751C /* Models */,
 				D6EEC3162A849C3300DA751C /* Screens */,
-				D6EEC3202A849DFE00DA751C /* Support */,
 				D67A537F2A84DD7800C0AD2D /* Repositories */,
+				D6EEC3202A849DFE00DA751C /* Support */,
 				D6EEC30B2A849BCA00DA751C /* Assets.xcassets */,
 				D6EEC30D2A849BCA00DA751C /* LaunchScreen.storyboard */,
 				D6EEC3102A849BCA00DA751C /* Info.plist */,
@@ -248,7 +253,6 @@
 				D67A53972A868E1B00C0AD2D /* Calendar+Ext.swift in Sources */,
 				D6EEC3052A849BC800DA751C /* SceneDelegate.swift in Sources */,
 				D67A53812A84DDAB00C0AD2D /* TodoRepository.swift in Sources */,
-				D67A53872A84E2CC00C0AD2D /* String+Ext.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
