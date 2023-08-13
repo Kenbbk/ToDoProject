@@ -14,6 +14,8 @@ class ToDoVC: UIViewController {
     
     var section: [String] = []
     
+    var persistentManager: PersistentManager
+    
     private var toDoRepository: TodoRepository
     
     private var localRepo: [Todo] = [] {
@@ -21,6 +23,8 @@ class ToDoVC: UIViewController {
             print("Sorted")
             self.localRepo.sort { $0.date > $1.date }
             applySnapShot()
+            persistentManager.save(toDos: toDoRepository.getAllList())
+
         }
     }
     
@@ -58,8 +62,9 @@ class ToDoVC: UIViewController {
     
     //MARK: - Lifecycle
     
-    init(toDoRepository: TodoRepository) {
+    init(toDoRepository: TodoRepository, persistentManager: PersistentManager) {
         self.toDoRepository = toDoRepository
+        self.persistentManager = persistentManager
         self.localRepo = toDoRepository.getFillterAndSorted()
         super.init(nibName: nil, bundle: nil)
         
@@ -98,6 +103,10 @@ class ToDoVC: UIViewController {
     }
     
     //MARK: - Helpers
+    
+   
+    
+    
     
     private func applySnapShot() {
         
@@ -183,6 +192,7 @@ extension ToDoVC: OptionViewDelegate {
         if case 0 = row {
            
             toggleDone(on: toDo, with: connectedCell)
+            persistentManager.save(toDos: toDoRepository.getAllList())
         }
         if case 1 = row {
             

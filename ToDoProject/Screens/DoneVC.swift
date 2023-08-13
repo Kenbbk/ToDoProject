@@ -48,8 +48,6 @@ class DoneVC: UIViewController {
         self.toDoRepository = toDoRepository
         self.localRepo = toDoRepository.getAllList().filter { $0.done == true }
         
-        
-        
     }
     
     required init?(coder: NSCoder) {
@@ -64,6 +62,7 @@ class DoneVC: UIViewController {
         dataSource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, itemIdentifier in
             let cell = UITableViewCell()
             cell.textLabel?.text = itemIdentifier.title
+            cell.textLabel?.textColor = UIColor(red: 96/255, green: 96/255, blue: 96/255, alpha: 1)
             return cell
         })
     }

@@ -11,8 +11,11 @@ class MainVC: UIViewController {
     
     //MARK: - Properties
     
+    private let userDefaultService = UserDefaultService()
     
-    let toDoRepository = TodoRepository()
+    private lazy var toDoRepository = TodoRepository(persistentManager: userDefaultService)
+    
+    
     
     private var gray: UIColor {
         return UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1)
@@ -56,7 +59,7 @@ class MainVC: UIViewController {
     
     private func pushToNextVC(row: Int) {
         
-        let vc = row == 0 ? ToDoVC(toDoRepository: toDoRepository) : DoneVC(toDoRepository: toDoRepository)
+        let vc = row == 0 ? ToDoVC(toDoRepository: toDoRepository, persistentManager: userDefaultService) : DoneVC(toDoRepository: toDoRepository)
         
         navigationController?.pushViewController(vc, animated: true)
     }

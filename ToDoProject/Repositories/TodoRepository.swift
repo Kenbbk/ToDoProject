@@ -9,6 +9,8 @@ import Foundation
 
 class TodoRepository {
     
+    private let persistentManager: PersistentManager
+    
     private var toDoList: [Todo] = [
         Todo(title: "test1", done: false, date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, uuid: UUID().uuidString),
         Todo(title: "test2", done: false, date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, uuid: UUID().uuidString)
@@ -38,4 +40,30 @@ class TodoRepository {
         return toDoList.filter { $0.done == true }
     }
     
+    
+    init(persistentManager: PersistentManager) {
+        self.persistentManager = persistentManager
+        do {
+            toDoList = try persistentManager.fetch()
+        } catch PersistentError.noData {
+            print("No data")
+        } catch PersistentError.failFromDefault {
+            print("Fail from default")
+        } catch {
+            print("Unknown")
+        }
+        
+        
+        
+        
+//        if let data = UserDefaults.standard.data(forKey: "todos") {
+//            do {
+//                toDoList = try JSONDecoder().decode([Todo].self, from: data)
+//            } catch {
+//                print(error)
+//            }
+//        }
+            
+        
+    }
 }

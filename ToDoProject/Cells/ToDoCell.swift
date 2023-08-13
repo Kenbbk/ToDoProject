@@ -20,8 +20,10 @@ class ToDoCell: UITableViewCell {
             
             if isDone {
                 label.attributedText = label.attributedText?.strikeThrough()
+                optionImageView.tintColor = .systemGreen
             } else {
                 label.attributedText = label.attributedText?.removeStrikeThrough()
+                optionImageView.tintColor = .gray
             }
         }
     }
@@ -34,6 +36,7 @@ class ToDoCell: UITableViewCell {
         let label = UILabel()
         label.text = "Todo"
         label.textColor = UIColor(red: 96/255, green: 96/255, blue: 96/255, alpha: 1)
+        
         label.font = UIFont.systemFont(ofSize: 19)
         
         
@@ -45,6 +48,7 @@ class ToDoCell: UITableViewCell {
 
         iv.image = UIImage(systemName: "list.clipboard")
         iv.tintColor = .gray
+        
 
         iv.isUserInteractionEnabled = true
         iv.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(optionImageTapped(_:))))
