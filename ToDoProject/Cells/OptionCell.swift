@@ -41,6 +41,13 @@ class Optioncell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configureCell(index: Int, isDone: Bool) {
+        setText(index: index, isDone: isDone)
+        setIcon(index: index)
+    }
+    
+    //MARK: - UI
+    
     private func configureUI() {
         
         contentView.addSubview(optionImageView)
@@ -62,10 +69,7 @@ class Optioncell: UITableViewCell {
         ])
     }
     
-    func configureCell(index: Int, isDone: Bool) {
-        setText(index: index, isDone: isDone)
-        setIcon(index: index)
-    }
+    
     
     
 }

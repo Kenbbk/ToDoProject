@@ -13,7 +13,7 @@ class TodoRepository {
         Todo(title: "test1", done: false, date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, uuid: UUID().uuidString),
         Todo(title: "test2", done: false, date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, uuid: UUID().uuidString)
     ]
-//    let modifiedDate = Calendar.current.date(byAdding: .day, value: 1, to: today)!
+
     func addToDo(toDo: Todo) {
         toDoList.append(toDo)
     }
@@ -38,8 +38,4 @@ class TodoRepository {
         return toDoList.filter { $0.done == true }
     }
     
-//    func checkToggle(toDo: Todo) {
-//        guard let index = toDoList.firstIndex(of: toDo) else { return }
-//        toDoList[index].done.toggle()
-//    }
 }

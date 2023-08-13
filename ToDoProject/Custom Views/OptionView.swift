@@ -36,13 +36,16 @@ class OptionView: UIView {
     
     private let containerView: UIView = {
        let view = UIView()
-        
-        
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowRadius = 10
-        view.layer.shadowOpacity = 1
-        view.layer.shadowOffset = .zero
         view.layer.masksToBounds = false
+        
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 10
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowRadius = 1
+        view.layer.shadowOpacity = 0.6
+        view.layer.shadowOffset = .zero
+        
+        
         
         return view
     }()
@@ -55,6 +58,7 @@ class OptionView: UIView {
         tb.isScrollEnabled = false
         tb.backgroundColor = .white
         tb.layer.cornerRadius = 10
+        
         tb.separatorStyle = .singleLine
         tb.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         tb.clipsToBounds = true
@@ -103,6 +107,10 @@ class OptionView: UIView {
             
             let cell = Optioncell()
             cell.configureCell(index: indexPath.row, isDone: self.connectedCell!.isDone)
+            
+            if indexPath.row == 2 {
+                cell.separatorInset = UIEdgeInsets(top: 0, left: 150, bottom: 0, right: 0)
+            }
             
             return cell
         })

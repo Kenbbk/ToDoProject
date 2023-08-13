@@ -30,10 +30,6 @@ class DoneVC: UIViewController {
     
     private var section: [String] = [] 
         
-            
-        
-    
-    
     private var dataSource: UITableViewDiffableDataSource<String, Todo>!
     
     //MARK: - Lifecycle
