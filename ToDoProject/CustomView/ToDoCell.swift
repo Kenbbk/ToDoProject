@@ -13,9 +13,20 @@ protocol ToDoCellDelegate: AnyObject {
 
 class ToDoCell: UITableViewCell {
     
-    static let identifier = "ToDoCell"
+    //MARK: - Properties
     
-    var isDone = false
+    var isDone = false {
+        didSet {
+            
+            if isDone {
+                label.attributedText = label.attributedText?.strikeThrough()
+            } else {
+                label.attributedText = label.attributedText?.removeStrikeThrough()
+            }
+        }
+    }
+    
+    static let identifier = "ToDoCell"
     
     weak var delegate: ToDoCellDelegate?
     
@@ -23,6 +34,7 @@ class ToDoCell: UITableViewCell {
         let label = UILabel()
         label.text = "Todo"
         label.textColor = .gray
+        
         return label
     }()
     
@@ -34,7 +46,7 @@ class ToDoCell: UITableViewCell {
         return iv
     }()
     
-    
+    //MARK: - Lifecycle
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -46,27 +58,24 @@ class ToDoCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: - Actions
+    
     @objc private func optionImageTapped(_ gesture: UITapGestureRecognizer) {
-        isDone.toggle()
         
         let location = convert(optionImageView.frame.origin, to: self.superview?.superview)
-        label.attributedText = "asdasdad".strikeThrough()
         delegate?.optionTapped(sender: self, cgPoint: location)
+        //        viewModel?.toDo
+        //
         
-        
-
-        
+        //        label.attributedText = "asdasdad".strikeThrough()
         
     }
     
+    //MARK: - Helpers
+    
+    //MARK: - UI
+    
     private func configureUI() {
-        contentView.addSubview(label)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            label.heightAnchor.constraint(equalToConstant: 40)
-        ])
         
         contentView.addSubview(optionImageView)
         optionImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +85,14 @@ class ToDoCell: UITableViewCell {
             optionImageView.heightAnchor.constraint(equalToConstant: 40),
             optionImageView.widthAnchor.constraint(equalToConstant: 40)
         ])
+        
+        contentView.addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
+            label.heightAnchor.constraint(equalToConstant: 40),
+            label.trailingAnchor.constraint(equalTo: optionImageView.leadingAnchor, constant: -5)
+        ])
     }
-    
-    
 }

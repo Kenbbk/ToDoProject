@@ -27,7 +27,7 @@ class ItemService {
     }
     
     func makeDoneItemIdentifier(toDos: [Todo]) -> [(Todo, String)] {
-        var sortedToDos = toDos.sorted { $0.doneDate! < $1.doneDate! }
+        let sortedToDos = toDos.sorted { $0.doneDate! < $1.doneDate! }
         var tupleResult: [(toDo :Todo, sectionString: String)] = []
         for todo in sortedToDos {
             let stringDate = todo.doneDate!.convertToString()

@@ -15,9 +15,6 @@ class SectionService {
         let array = Array(set).sorted { $0 > $1}
         
         return array.map { $0.convertToString()}
-                    
-        
-        
     }
     
     func makeDoneSection(toDos: [Todo]) -> [String] {
@@ -27,6 +24,5 @@ class SectionService {
         let array = Array(set).sorted { $0 > $1}
         
         return array.map { $0.convertToString()}
-        
     }
 }

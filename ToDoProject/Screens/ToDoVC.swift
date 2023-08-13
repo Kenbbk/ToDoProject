@@ -14,7 +14,7 @@ class ToDoVC: UIViewController {
     
     var section: [String] = []
     
-    private var toDoRepository: TodoRepository!
+    private var toDoRepository: TodoRepository
     
     private var localRepo: [Todo] = [] {
         didSet {
@@ -23,8 +23,6 @@ class ToDoVC: UIViewController {
             applySnapShot()
         }
     }
-    
-    
     
     private lazy var optionView: OptionView = {
         let optionView = OptionView(frame: UIScreen.main.bounds)
@@ -43,31 +41,38 @@ class ToDoVC: UIViewController {
         return tb
     }()
     
-    var datasource: UITableViewDiffableDataSource<String, Todo>!
+    private lazy var datasource: UITableViewDiffableDataSource<String, Todo> = {
+        let dataSource = UITableViewDiffableDataSource<String, Todo>(tableView: tableView) { tableView, indexPath, itemIdentifier in
+            let cell = tableView.dequeueReusableCell(withIdentifier: ToDoCell.identifier, for: indexPath) as! ToDoCell
+            
+            cell.delegate = self
+            cell.label.attributedText = NSAttributedString(string: itemIdentifier.title)
+            
+            return cell
+        }
+        
+        return dataSource
+    }()
     
     
     //MARK: - Lifecycle
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        title = "할일"
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "할일 추가", style: .plain, target: self, action: #selector(addButtopTapped))
-        view.backgroundColor = .systemCyan
-        configureTableView()
-        configureOptionView()
-        configureDataSource()
-        applySnapShot()
-        
-    }
     
     init(toDoRepository: TodoRepository) {
-        super.init(nibName: nil, bundle: nil)
         self.toDoRepository = toDoRepository
         self.localRepo = toDoRepository.getFillterAndSorted()
+        super.init(nibName: nil, bundle: nil)
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        configureUI()
+        applySnapShot()
     }
     
     //MARK: - Actions
@@ -92,36 +97,6 @@ class ToDoVC: UIViewController {
     
     //MARK: - Helpers
     
-    private func configureOptionView() {
-        UIApplication.shared.keyWindow?.addSubview(optionView)
-        //        view.addSubview(optionView)
-        view.bringSubviewToFront(optionView)
-    }
-    private func configureTableView() {
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-    }
-    
-    private func configureDataSource() {
-        datasource = UITableViewDiffableDataSource(tableView: tableView, cellProvider: { tableView, indexPath, itemIdentifier in
-            
-            let cell = tableView.dequeueReusableCell(withIdentifier: ToDoCell.identifier, for: indexPath) as! ToDoCell
-            
-            cell.delegate = self
-            cell.label.text = itemIdentifier.title
-            print("mask",cell.layer.masksToBounds)
-            print("clups",cell.clipsToBounds)
-            return cell
-        })
-        
-    }
-    
     private func applySnapShot() {
         
         var snapshot = NSDiffableDataSourceSnapshot<String, Todo>()
@@ -136,57 +111,37 @@ class ToDoVC: UIViewController {
         datasource.apply(snapshot)
     }
     
-//    private func updateSnapshot() {
-//        var snapshot = NSDiffableDataSourceSnapshot<String, Todo>()
-//        let sectionString = SectionService().makeStringSection(toDos: localRepo)
-//        section = sectionString
-//        snapshot.appendSections(section)
-//
-//
-//    }
+    //MARK: - UI
     
-    //    private func applyOldSnapshot(toDo: Todo) {
-    //        var oldSnapshot = datasource.snapshot()
-    //        let tuple = ItemService().makeItemIdentifier(toDo: toDo)
-    //
-    //        if oldSnapshot.sectionIdentifiers.contains(tuple.1) {
-    //
-    //            if let first = oldSnapshot.itemIdentifiers(inSection: tuple.1).first {
-    //                oldSnapshot.insertItems([toDo], beforeItem: first)
-    //            }
-    //
-    //        } else {
-    //
-    //            if let first = oldSnapshot.sectionIdentifiers.first {
-    //
-    //                print(tuple.1)
-    ////                oldSnapshot.appendSections([tuple.1])
-    //
-    //                oldSnapshot.insertSections([tuple.1], beforeSection: first)
-    //                oldSnapshot.appendItems([toDo], toSection: tuple.1)
-    //                print("1")
-    //            } else {
-    //
-    //                oldSnapshot.appendSections([tuple.1])
-    //                oldSnapshot.appendItems([toDo], toSection: tuple.1)
-    //                print("2")
-    //            }
-    //
-    //        }
-    //
-    //        section.insert(tuple.1, at: 0)
-    ////        if let first = oldSnapshot.itemIdentifiers.first {
-    ////            oldSnapshot.insertItems([toDo], beforeItem: first)
-    ////        } else {
-    ////            oldSnapshot.appendItems([toDo])
-    ////        }
-    //
-    //        datasource.apply(oldSnapshot)
-    //    }
-    //
-    //
-    //}
+    private func configureUI() {
+        title = "할일"
+        configureRightBarButtonItem()
+        configureOptionView()
+        configureTableView()
+    }
+    
+    private func configureRightBarButtonItem() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "할일 추가", style: .plain, target: self, action: #selector(addButtopTapped))
+    }
+    
+    private func configureOptionView() {
+        UIApplication.shared.keyWindow?.addSubview(optionView)
+        view.bringSubviewToFront(optionView)
+    }
+    
+    private func configureTableView() {
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
 }
+
+//MARK: - TableView Delegate
 extension ToDoVC: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -197,35 +152,54 @@ extension ToDoVC: UITableViewDelegate {
         let view = UITableViewHeaderFooterView()
         guard !datasource.snapshot().sectionIdentifiers.isEmpty else { return nil }
         print(self.section)
-        //        view.textLabel?.text = self.section[section]
+        
         view.textLabel?.text = datasource.snapshot().sectionIdentifiers[section]
         return view
     }
     
 }
 
+//MARK: - ToDoCellDelegate
+
 extension ToDoVC: ToDoCellDelegate {
     func optionTapped(sender: ToDoCell, cgPoint: CGPoint) {
         print("Tapped")
-        guard let index = self.tableView.indexPath(for: sender) else { return }
         
-//        let toDo = localRepo[index.row]
-        let toDo = datasource.snapshot().itemIdentifiers(inSection: datasource.snapshot().sectionIdentifiers[index.section])[index.row]
-//        let toDo = datasource.snapshot().itemIdentifiers(inSection: a)[index.row]
-        print(index.section)
-//        toDoRepository.checkToggle(toDo: toDo)
-        toDo.done.toggle()
-        toDo.doneDate = Date()
-        print(toDo.uuid, toDo.done, toDo.doneDate)
-                
+        
+        
+//        let toDo = datasource.snapshot().itemIdentifiers(inSection: datasource.snapshot().sectionIdentifiers[index.section])[index.row]
+        
+//        print(index.section)
+        
+//        toDo.done.toggle()
+//        toDo.doneDate = Date()
+//        print(toDo.uuid, toDo.done, toDo.doneDate)
+        
         optionView.location = cgPoint
         optionView.isHidden = false
+        optionView.connectedCell = sender
     }
 }
 
+//MARK: - OptionView Delegate
 extension ToDoVC: OptionViewDelegate {
-    func optionTableTapped(row: Int) {
-        print("Message well arrived" , row)
+    func optionTableTapped(row: Int, connectedCell: ToDoCell) {
+        guard let index = self.tableView.indexPath(for: connectedCell) else { return }
+        let toDo = datasource.snapshot().itemIdentifiers(inSection: datasource.snapshot().sectionIdentifiers[index.section])[index.row]
+        
+        if case 0 = row {
+            toDo.done.toggle()
+            toDo.doneDate = Date()
+            connectedCell.isDone.toggle()
+        }
+        if case 1 = row {
+            print(1)
+        }
+        if case 2 = row {
+            print(2)
+        }
+                
+                
     }
 }
 
