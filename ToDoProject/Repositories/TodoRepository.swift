@@ -9,12 +9,17 @@ import Foundation
 
 class TodoRepository {
     
+    //MARK: - Properties
+    
     private let persistentManager: PersistentManager
     
     private var toDoList: [Todo] = [
         Todo(title: "test1", done: false, date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!, uuid: UUID().uuidString),
         Todo(title: "test2", done: false, date: Calendar.current.date(byAdding: .day, value: -2, to: Date())!, uuid: UUID().uuidString)
     ]
+    
+    //MARK: - Helpers
+    
 
     func addToDo(toDo: Todo) {
         toDoList.append(toDo)
@@ -40,6 +45,22 @@ class TodoRepository {
         return toDoList.filter { $0.done == true }
     }
     
+    func toggleDoneAndSetDate(toDo: Todo) {
+        if let index = toDoList.firstIndex(of: toDo) {
+            toggleDone(index: index)
+            setDoneDate(index: index)
+        }
+    }
+    
+    private func setDoneDate(index: Int) {
+        toDoList[index].doneDate = Date()
+    }
+    
+    private func toggleDone(index: Int) {
+        toDoList[index].done.toggle()
+    }
+    
+    //MARK: - Lifecycle
     
     init(persistentManager: PersistentManager) {
         self.persistentManager = persistentManager
@@ -52,18 +73,6 @@ class TodoRepository {
         } catch {
             print("Unknown")
         }
-        
-        
-        
-        
-//        if let data = UserDefaults.standard.data(forKey: "todos") {
-//            do {
-//                toDoList = try JSONDecoder().decode([Todo].self, from: data)
-//            } catch {
-//                print(error)
-//            }
-//        }
-            
         
     }
 }

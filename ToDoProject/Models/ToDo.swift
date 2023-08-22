@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Todo: Codable, Equatable, Hashable {
+struct Todo: Codable, Equatable, Hashable {
     var title: String
     var done: Bool
     let date: Date

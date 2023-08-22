@@ -18,6 +18,8 @@ class ToDoVC: UIViewController {
     
     private var toDoRepository: TodoRepository
     
+    
+    
     private var localRepo: [Todo] = [] {
         didSet {
             print("Sorted")
@@ -51,7 +53,6 @@ class ToDoVC: UIViewController {
             
             cell.delegate = self
             cell.label.attributedText = NSAttributedString(string: itemIdentifier.title)
-            
             
             return cell
         }
@@ -104,10 +105,6 @@ class ToDoVC: UIViewController {
     
     //MARK: - Helpers
     
-   
-    
-    
-    
     private func applySnapShot() {
         
         var snapshot = NSDiffableDataSourceSnapshot<String, Todo>()
@@ -126,9 +123,10 @@ class ToDoVC: UIViewController {
     
     private func configureUI() {
         title = "할일"
+        configureTableView()
         configureRightBarButtonItem()
         configureOptionView()
-        configureTableView()
+        
         
     }
     
@@ -143,6 +141,7 @@ class ToDoVC: UIViewController {
     
     private func configureTableView() {
         view.addSubview(tableView)
+       
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -222,7 +221,10 @@ extension ToDoVC {
         let confirmAction = UIAlertAction(title: "수정", style: .default) { action in
             
             guard let title = textField.text else { return }
-            toDo.title = title
+            if let index = self.localRepo.firstIndex(of: toDo) {
+                self.localRepo[index].title = title
+            }
+            
             connectedCell.label.attributedText = NSAttributedString(string: title)
         }
         let cancelAction = UIAlertAction(title: "취소", style: .default)
@@ -234,8 +236,11 @@ extension ToDoVC {
     }
     
     private func toggleDone(on toDo: Todo, with connectedCell: ToDoCell) {
-        toDo.done.toggle()
-        toDo.doneDate = Date()
+        if let index = localRepo.firstIndex(of: toDo) {
+            localRepo[index].done.toggle()
+            localRepo[index].doneDate = Date()
+        }
+        toDoRepository.toggleDoneAndSetDate(toDo: toDo)
         connectedCell.isDone.toggle()
     }
     

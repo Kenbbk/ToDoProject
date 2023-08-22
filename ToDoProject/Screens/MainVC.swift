@@ -11,11 +11,13 @@ class MainVC: UIViewController {
     
     //MARK: - Properties
     
-    private let userDefaultService = UserDefaultService()
+    private let userDefaultService: PersistentManager = UserDefaultService()
     
-    private lazy var toDoRepository = TodoRepository(persistentManager: userDefaultService)
+    private let toDoRepository: TodoRepository
     
+//    private lazy var toDoRepository = TodoRepository(persistentManager: userDefaultService)
     
+    var selection: ((Int) -> Void)
     
     private var gray: UIColor {
         return UIColor(red: 30/255, green: 30/255, blue: 30/255, alpha: 1)
@@ -53,19 +55,30 @@ class MainVC: UIViewController {
         configureTableView()
     }
     
+    init(toDoRepository: TodoRepository, selection: @escaping ((Int) -> Void) ) {
+        self.toDoRepository = toDoRepository
+        self.selection = selection
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     //MARK: - Actions
     
     //MARK: - Helpers
     
-    private func pushToNextVC(row: Int) {
-        
-        let vc = row == 0 ? ToDoVC(toDoRepository: toDoRepository, persistentManager: userDefaultService) : DoneVC(toDoRepository: toDoRepository)
-        
-        navigationController?.pushViewController(vc, animated: true)
-    }
+//    private func pushToNextVC(row: Int) {
+//
+//        let vc = row == 0 ? ToDoVC(toDoRepository: toDoRepository, persistentManager: userDefaultService) : DoneVC(toDoRepository: toDoRepository)
+//
+//        navigationController?.pushViewController(vc, animated: true)
+//    }
     
     
     //MARK: - UI
+    
     private func configureTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -99,7 +112,8 @@ class MainVC: UIViewController {
 
 extension MainVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        pushToNextVC(row: indexPath.row)
+        selection(indexPath.row)
+        print("Selection called")
         
     }
 }

@@ -18,6 +18,8 @@
 		D67A53972A868E1B00C0AD2D /* Calendar+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D67A53962A868E1B00C0AD2D /* Calendar+Ext.swift */; };
 		D6804ECB2A88BC4800F23E15 /* NSAttributedString+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6804ECA2A88BC4800F23E15 /* NSAttributedString+Ext.swift */; };
 		D6804ECE2A890BE600F23E15 /* UserDefaultService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6804ECD2A890BE600F23E15 /* UserDefaultService.swift */; };
+		D6804EF42A8A14E200F23E15 /* PersistentManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6804EF32A8A14E200F23E15 /* PersistentManager.swift */; };
+		D6804EF72A8A153C00F23E15 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6804EF62A8A153C00F23E15 /* Errors.swift */; };
 		D6EEC3032A849BC800DA751C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEC3022A849BC800DA751C /* AppDelegate.swift */; };
 		D6EEC3052A849BC800DA751C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEC3042A849BC800DA751C /* SceneDelegate.swift */; };
 		D6EEC30C2A849BCA00DA751C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D6EEC30B2A849BCA00DA751C /* Assets.xcassets */; };
@@ -40,6 +42,8 @@
 		D67A53962A868E1B00C0AD2D /* Calendar+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar+Ext.swift"; sourceTree = "<group>"; };
 		D6804ECA2A88BC4800F23E15 /* NSAttributedString+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Ext.swift"; sourceTree = "<group>"; };
 		D6804ECD2A890BE600F23E15 /* UserDefaultService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultService.swift; sourceTree = "<group>"; };
+		D6804EF32A8A14E200F23E15 /* PersistentManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistentManager.swift; sourceTree = "<group>"; };
+		D6804EF62A8A153C00F23E15 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		D6EEC2FF2A849BC800DA751C /* ToDoProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ToDoProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6EEC3022A849BC800DA751C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D6EEC3042A849BC800DA751C /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -84,6 +88,7 @@
 		D67A53822A84DE1200C0AD2D /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				D6804EF22A8A14D000F23E15 /* Protocols */,
 				D67A53902A86258400C0AD2D /* SectionService.swift */,
 				D67A53922A86265200C0AD2D /* ItemService.swift */,
 				D6804ECD2A890BE600F23E15 /* UserDefaultService.swift */,
@@ -109,6 +114,22 @@
 			path = "Custom Views";
 			sourceTree = "<group>";
 		};
+		D6804EF22A8A14D000F23E15 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				D6804EF32A8A14E200F23E15 /* PersistentManager.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		D6804EF52A8A152600F23E15 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				D6804EF62A8A153C00F23E15 /* Errors.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
 		D6EEC2F62A849BC700DA751C = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +149,7 @@
 		D6EEC3012A849BC800DA751C /* ToDoProject */ = {
 			isa = PBXGroup;
 			children = (
+				D6804EF52A8A152600F23E15 /* Errors */,
 				D6804ECC2A88C58400F23E15 /* Custom Views */,
 				D67A53852A84E2C300C0AD2D /* Extensions */,
 				D67A53822A84DE1200C0AD2D /* Services */,
@@ -247,9 +269,11 @@
 				D67A538B2A85425400C0AD2D /* OptionCell.swift in Sources */,
 				D6EEC31A2A849C6100DA751C /* DoneVC.swift in Sources */,
 				D67A53912A86258400C0AD2D /* SectionService.swift in Sources */,
+				D6804EF72A8A153C00F23E15 /* Errors.swift in Sources */,
 				D67A53932A86265200C0AD2D /* ItemService.swift in Sources */,
 				D67A537E2A84BF5A00C0AD2D /* MarkCell.swift in Sources */,
 				D6EEC31F2A849CB700DA751C /* ToDo.swift in Sources */,
+				D6804EF42A8A14E200F23E15 /* PersistentManager.swift in Sources */,
 				D67A538D2A8542C600C0AD2D /* OptionView.swift in Sources */,
 				D6EEC31C2A849C7200DA751C /* ToDoVC.swift in Sources */,
 				D67A538F2A85E38D00C0AD2D /* Date+Ext.swift in Sources */,

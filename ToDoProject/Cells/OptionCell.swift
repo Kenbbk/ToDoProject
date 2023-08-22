@@ -11,6 +11,8 @@ class Optioncell: UITableViewCell {
     
     static let identifier = "Optioncell"
     
+    let label1 = UILabel()
+    
     let label: UILabel = {
         let label = UILabel()
         label.text = "완료"
@@ -68,10 +70,6 @@ class Optioncell: UITableViewCell {
             label.trailingAnchor.constraint(equalTo: optionImageView.leadingAnchor, constant: -5)
         ])
     }
-    
-    
-    
-    
 }
 
 extension Optioncell {

@@ -7,16 +7,6 @@
 
 import Foundation
 
-enum PersistentError: Error {
-    case noData
-    case failFromDefault
-}
-
-protocol PersistentManager {
-    func save(toDos: [Todo])
-    func fetch() throws -> [Todo]
-}
-
 struct UserDefaultService: PersistentManager {
     
     let key = "todos"
