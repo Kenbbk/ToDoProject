@@ -15,7 +15,7 @@ class MainVC: UIViewController {
     
     private let toDoRepository: TodoRepository
     
-//    private lazy var toDoRepository = TodoRepository(persistentManager: userDefaultService)
+    private let ImageNetworkService: ImageNetworkService
     
     var selection: ((Int) -> Void)
     
@@ -40,6 +40,8 @@ class MainVC: UIViewController {
     
     var gradientView: UIView!
     
+    let imageView = UIImageView()
+    
     private let toDoView: UIView = {
         let view = UIView()
         view.backgroundColor = .black
@@ -50,14 +52,15 @@ class MainVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureGradientView()
+        configureUI()
         
-        configureTableView()
+        loadImage()
     }
     
-    init(toDoRepository: TodoRepository, selection: @escaping ((Int) -> Void) ) {
+    init(toDoRepository: TodoRepository, ImageNetworkService: ImageNetworkService, selection: @escaping ((Int) -> Void) ) {
         self.toDoRepository = toDoRepository
         self.selection = selection
+        self.ImageNetworkService = ImageNetworkService
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -69,15 +72,26 @@ class MainVC: UIViewController {
     
     //MARK: - Helpers
     
-//    private func pushToNextVC(row: Int) {
-//
-//        let vc = row == 0 ? ToDoVC(toDoRepository: toDoRepository, persistentManager: userDefaultService) : DoneVC(toDoRepository: toDoRepository)
-//
-//        navigationController?.pushViewController(vc, animated: true)
-//    }
+    private func loadImage() {
+        Task {
+            do {
+                let image = try await ImageNetworkService.downLoadImage()
+                imageView.image = image
+            } catch {
+                print(error)
+            }
+        }
+    }
     
     
     //MARK: - UI
+    
+    private func configureUI() {
+        configureGradientView()
+        configureTableView()
+        configureImageView()
+       
+    }
     
     private func configureTableView() {
         view.addSubview(tableView)
@@ -90,15 +104,17 @@ class MainVC: UIViewController {
         ])
     }
     
-    private func configureToDoView() {
-        view.addSubview(toDoView)
-        toDoView.translatesAutoresizingMaskIntoConstraints = false
+    private func configureImageView() {
+        view.addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            toDoView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            toDoView.widthAnchor.constraint(equalToConstant: 100),
-            toDoView.heightAnchor.constraint(equalToConstant: 100)
+            imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageView.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 40),
+            imageView.widthAnchor.constraint(equalToConstant: 200),
+            imageView.heightAnchor.constraint(equalToConstant: 100)
         ])
     }
+    
     
     private func configureGradientView() {
         gradientView = UIView(frame: view.frame)

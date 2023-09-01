@@ -19,6 +19,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     private lazy var sectionService = SectionService()
     
+    private lazy var imageNetworkService = ImageNetworkService()
+    
     private let nav = UINavigationController()
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
@@ -47,7 +49,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             nav.pushViewController(vc, animated: true)
         }
         
-        return MainVC(toDoRepository: toDoRepository, selection: selection)
+        return MainVC(toDoRepository: toDoRepository, ImageNetworkService: imageNetworkService, selection: selection)
     }
     
     private func makeToDoVC() ->  ToDoVC {

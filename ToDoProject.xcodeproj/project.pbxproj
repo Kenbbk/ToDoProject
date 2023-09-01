@@ -28,6 +28,7 @@
 		D6EEC31A2A849C6100DA751C /* DoneVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEC3192A849C6100DA751C /* DoneVC.swift */; };
 		D6EEC31C2A849C7200DA751C /* ToDoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEC31B2A849C7200DA751C /* ToDoVC.swift */; };
 		D6EEC31F2A849CB700DA751C /* ToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEC31E2A849CB700DA751C /* ToDo.swift */; };
+		D6F09E3E2AA19D26002E87D5 /* ImageNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F09E3D2AA19D26002E87D5 /* ImageNetworkService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		D6EEC3192A849C6100DA751C /* DoneVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneVC.swift; sourceTree = "<group>"; };
 		D6EEC31B2A849C7200DA751C /* ToDoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoVC.swift; sourceTree = "<group>"; };
 		D6EEC31E2A849CB700DA751C /* ToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDo.swift; sourceTree = "<group>"; };
+		D6F09E3D2AA19D26002E87D5 /* ImageNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageNetworkService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,6 +94,7 @@
 				D67A53902A86258400C0AD2D /* SectionService.swift */,
 				D67A53922A86265200C0AD2D /* ItemService.swift */,
 				D6804ECD2A890BE600F23E15 /* UserDefaultService.swift */,
+				D6F09E3D2AA19D26002E87D5 /* ImageNetworkService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				D6804EF42A8A14E200F23E15 /* PersistentManager.swift in Sources */,
 				D67A538D2A8542C600C0AD2D /* OptionView.swift in Sources */,
 				D6EEC31C2A849C7200DA751C /* ToDoVC.swift in Sources */,
+				D6F09E3E2AA19D26002E87D5 /* ImageNetworkService.swift in Sources */,
 				D67A538F2A85E38D00C0AD2D /* Date+Ext.swift in Sources */,
 				D67A53892A84E44900C0AD2D /* ToDoCell.swift in Sources */,
 				D67A53972A868E1B00C0AD2D /* Calendar+Ext.swift in Sources */,
