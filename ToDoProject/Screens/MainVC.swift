@@ -11,8 +11,6 @@ class MainVC: UIViewController {
     
     //MARK: - Properties
     
-    private let userDefaultService: PersistentManager = UserDefaultService()
-    
     private let toDoRepository: TodoRepository
     
     private let ImageNetworkService: ImageNetworkService
@@ -55,6 +53,8 @@ class MainVC: UIViewController {
         configureUI()
         
         loadImage()
+
+        
     }
     
     init(toDoRepository: TodoRepository, ImageNetworkService: ImageNetworkService, selection: @escaping ((Int) -> Void) ) {

@@ -22,13 +22,12 @@ class ToDoVC: UIViewController {
     
     private var localRepo: [Todo] = [] {
         didSet {
-            print("Sorted")
             self.localRepo.sort { $0.date > $1.date }
             applySnapShot()
-            persistentManager.save(toDos: toDoRepository.getAllList())
-
         }
     }
+
+    
     
     private lazy var optionView: OptionView = {
         let optionView = OptionView(frame: UIScreen.main.bounds)
@@ -92,7 +91,9 @@ class ToDoVC: UIViewController {
         let confirmAction = UIAlertAction(title: "확인", style: .default) { action in
             let Todo = Todo(title: textField.text!)
             self.toDoRepository.addToDo(toDo: Todo)
+            self.persistentManager.save(toDo: Todo)
             self.localRepo.append(Todo)
+            
             
         }
         let cancelAction = UIAlertAction(title: "취소", style: .default)
@@ -190,8 +191,10 @@ extension ToDoVC: OptionViewDelegate {
         
         if case 0 = row {
            
-            toggleDone(on: toDo, with: connectedCell)
-            persistentManager.save(toDos: toDoRepository.getAllList())
+            
+            toggleDoneAndSave(on: toDo, with: connectedCell)
+            
+            
         }
         if case 1 = row {
             
@@ -215,6 +218,8 @@ extension ToDoVC {
         localRepo.remove(at: index)
     }
     
+    
+    
     private func showEditAlert(on toDo: Todo, with connectedCell: ToDoCell) {
         var textField: UITextField!
         let alert = UIAlertController(title: "할일을 수정해주세요", message: nil, preferredStyle: .alert)
@@ -222,7 +227,12 @@ extension ToDoVC {
             
             guard let title = textField.text else { return }
             if let index = self.localRepo.firstIndex(of: toDo) {
-                self.localRepo[index].title = title
+                var editedTodo = toDo
+                editedTodo.title = title
+                self.localRepo[index] = editedTodo
+                self.toDoRepository.editToDo(toDo: editedTodo)
+                self.persistentManager.update(todo: editedTodo)
+                
             }
             
             connectedCell.label.attributedText = NSAttributedString(string: title)
@@ -235,12 +245,19 @@ extension ToDoVC {
         
     }
     
-    private func toggleDone(on toDo: Todo, with connectedCell: ToDoCell) {
+    private func toggleDoneAndSave(on toDo: Todo, with connectedCell: ToDoCell) {
         if let index = localRepo.firstIndex(of: toDo) {
-            localRepo[index].done.toggle()
-            localRepo[index].doneDate = Date()
+            var editedTodo = toDo
+            editedTodo.done.toggle()
+            editedTodo.doneDate = Date()
+            
+            
+            localRepo[index] = editedTodo
+            toDoRepository.editToDo(toDo: editedTodo)
+            persistentManager.update(todo: editedTodo)
+            
         }
-        toDoRepository.toggleDoneAndSetDate(toDo: toDo)
+        
         connectedCell.isDone.toggle()
     }
     
@@ -254,6 +271,7 @@ extension ToDoVC {
     private func removeToDo(_ toDo: Todo) {
         toDoRepository.removeToDo(toDo)
         removeFromLocalRepo(toDo)
+        persistentManager.delete(todo: toDo)
     }
     
     private func getSelectedToDo(connectedCell: ToDoCell) -> Todo {

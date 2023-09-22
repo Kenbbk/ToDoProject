@@ -9,7 +9,11 @@ import Foundation
 
 protocol PersistentManager {
     
-    func save(toDos: [Todo])
+    func save(toDo: Todo)
     
     func fetch() throws -> [Todo]
+    
+    func delete(todo: Todo)
+    
+    func update(todo: Todo)
 }

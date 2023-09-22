@@ -45,6 +45,12 @@ class TodoRepository {
         return toDoList.filter { $0.done == true }
     }
     
+    func editToDo(toDo: Todo) {
+        if let index = toDoList.firstIndex(of: toDo) {
+            toDoList[index] = toDo
+        }
+    }
+    
     func toggleDoneAndSetDate(toDo: Todo) {
         if let index = toDoList.firstIndex(of: toDo) {
             toggleDone(index: index)
@@ -65,7 +71,9 @@ class TodoRepository {
     init(persistentManager: PersistentManager) {
         self.persistentManager = persistentManager
         do {
+
             toDoList = try persistentManager.fetch()
+
         } catch PersistentError.noData {
             print("No data")
         } catch PersistentError.failFromDefault {
@@ -73,6 +81,8 @@ class TodoRepository {
         } catch {
             print("Unknown")
         }
-        
+
     }
+    
+   
 }

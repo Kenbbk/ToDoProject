@@ -29,6 +29,8 @@
 		D6EEC31C2A849C7200DA751C /* ToDoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEC31B2A849C7200DA751C /* ToDoVC.swift */; };
 		D6EEC31F2A849CB700DA751C /* ToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EEC31E2A849CB700DA751C /* ToDo.swift */; };
 		D6F09E3E2AA19D26002E87D5 /* ImageNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F09E3D2AA19D26002E87D5 /* ImageNetworkService.swift */; };
+		D6F752AD2ABD10D6005F9C2E /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6F752AC2ABD10D6005F9C2E /* CoreDataManager.swift */; };
+		D6F752B02ABD1238005F9C2E /* TodoCore.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = D6F752AE2ABD1238005F9C2E /* TodoCore.xcdatamodeld */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +58,8 @@
 		D6EEC31B2A849C7200DA751C /* ToDoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoVC.swift; sourceTree = "<group>"; };
 		D6EEC31E2A849CB700DA751C /* ToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDo.swift; sourceTree = "<group>"; };
 		D6F09E3D2AA19D26002E87D5 /* ImageNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageNetworkService.swift; sourceTree = "<group>"; };
+		D6F752AC2ABD10D6005F9C2E /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		D6F752AF2ABD1238005F9C2E /* TodoCore.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TodoCore.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				D6804EF32A8A14E200F23E15 /* PersistentManager.swift */,
+				D6F752AC2ABD10D6005F9C2E /* CoreDataManager.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -164,6 +169,7 @@
 				D6EEC30B2A849BCA00DA751C /* Assets.xcassets */,
 				D6EEC30D2A849BCA00DA751C /* LaunchScreen.storyboard */,
 				D6EEC3102A849BCA00DA751C /* Info.plist */,
+				D6F752AE2ABD1238005F9C2E /* TodoCore.xcdatamodeld */,
 			);
 			path = ToDoProject;
 			sourceTree = "<group>";
@@ -275,8 +281,10 @@
 				D6804EF72A8A153C00F23E15 /* Errors.swift in Sources */,
 				D67A53932A86265200C0AD2D /* ItemService.swift in Sources */,
 				D67A537E2A84BF5A00C0AD2D /* MarkCell.swift in Sources */,
+				D6F752B02ABD1238005F9C2E /* TodoCore.xcdatamodeld in Sources */,
 				D6EEC31F2A849CB700DA751C /* ToDo.swift in Sources */,
 				D6804EF42A8A14E200F23E15 /* PersistentManager.swift in Sources */,
+				D6F752AD2ABD10D6005F9C2E /* CoreDataManager.swift in Sources */,
 				D67A538D2A8542C600C0AD2D /* OptionView.swift in Sources */,
 				D6EEC31C2A849C7200DA751C /* ToDoVC.swift in Sources */,
 				D6F09E3E2AA19D26002E87D5 /* ImageNetworkService.swift in Sources */,
@@ -494,6 +502,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		D6F752AE2ABD1238005F9C2E /* TodoCore.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				D6F752AF2ABD1238005F9C2E /* TodoCore.xcdatamodel */,
+			);
+			currentVersion = D6F752AF2ABD1238005F9C2E /* TodoCore.xcdatamodel */;
+			path = TodoCore.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = D6EEC2F72A849BC800DA751C /* Project object */;
 }
