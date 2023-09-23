@@ -12,22 +12,7 @@ class ToDoVC: UIViewController {
     
     //MARK: - Properties
     
-    var section: [String] = []
-    
-    var persistentManager: PersistentManager
-    
-    private var toDoRepository: TodoRepository
-    
-    
-    
-    private var localRepo: [Todo] = [] {
-        didSet {
-            self.localRepo.sort { $0.date > $1.date }
-            applySnapShot()
-        }
-    }
-
-    
+    var viewModel: ToDoViewModel
     
     private lazy var optionView: OptionView = {
         let optionView = OptionView(frame: UIScreen.main.bounds)
@@ -42,17 +27,18 @@ class ToDoVC: UIViewController {
         tb.delegate = self
         tb.register(ToDoCell.self, forCellReuseIdentifier: ToDoCell.identifier)
         tb.rowHeight = 60
-
+        
         return tb
     }()
     
-   private lazy var datasource: UITableViewDiffableDataSource<String, Todo> = {
+    private lazy var datasource: UITableViewDiffableDataSource<String, Todo> = {
         let dataSource = UITableViewDiffableDataSource<String, Todo>(tableView: tableView) { tableView, indexPath, itemIdentifier in
             let cell = tableView.dequeueReusableCell(withIdentifier: ToDoCell.identifier, for: indexPath) as! ToDoCell
             
             cell.delegate = self
             cell.label.attributedText = NSAttributedString(string: itemIdentifier.title)
-            
+            cell.isDone = itemIdentifier.done
+
             return cell
         }
         
@@ -62,12 +48,11 @@ class ToDoVC: UIViewController {
     
     //MARK: - Lifecycle
     
-    init(toDoRepository: TodoRepository, persistentManager: PersistentManager) {
-        self.toDoRepository = toDoRepository
-        self.persistentManager = persistentManager
-        self.localRepo = toDoRepository.getFillterAndSorted()
-        super.init(nibName: nil, bundle: nil)
+    init(viewModel: ToDoViewModel) {
+        self.viewModel = viewModel
         
+        super.init(nibName: nil, bundle: nil)
+        viewModel.delgate = self
     }
     
     required init?(coder: NSCoder) {
@@ -89,12 +74,7 @@ class ToDoVC: UIViewController {
         var textField: UITextField!
         let alert = UIAlertController(title: "할일을 추가해주세요", message: nil, preferredStyle: .alert)
         let confirmAction = UIAlertAction(title: "확인", style: .default) { action in
-            let Todo = Todo(title: textField.text!)
-            self.toDoRepository.addToDo(toDo: Todo)
-            self.persistentManager.save(toDo: Todo)
-            self.localRepo.append(Todo)
-            
-            
+            self.viewModel.addToDo(text: textField.text!)
         }
         let cancelAction = UIAlertAction(title: "취소", style: .default)
         
@@ -109,15 +89,15 @@ class ToDoVC: UIViewController {
     private func applySnapShot() {
         
         var snapshot = NSDiffableDataSourceSnapshot<String, Todo>()
-        section = SectionService().makeStringSection(toDos: localRepo)
-        snapshot.appendSections(section)
+                let section = viewModel.getSections()
         
-        let tupleResult = ItemService().makeItemIdentifier(toDos: localRepo)
+        snapshot.appendSections(section)
+        let tupleResult = viewModel.getItems()
         for (toDo, stringDate) in tupleResult {
             snapshot.appendItems([toDo], toSection: stringDate)
         }
-        
-        datasource.apply(snapshot)
+        datasource.apply(snapshot, animatingDifferences: false, completion: nil)
+   
     }
     
     //MARK: - UI
@@ -127,7 +107,6 @@ class ToDoVC: UIViewController {
         configureTableView()
         configureRightBarButtonItem()
         configureOptionView()
-        
         
     }
     
@@ -142,7 +121,7 @@ class ToDoVC: UIViewController {
     
     private func configureTableView() {
         view.addSubview(tableView)
-       
+        
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -152,7 +131,7 @@ class ToDoVC: UIViewController {
         ])
     }
     
-   
+    
 }
 
 //MARK: - TableView Delegate
@@ -165,7 +144,7 @@ extension ToDoVC: UITableViewDelegate {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let view = UITableViewHeaderFooterView()
         guard !datasource.snapshot().sectionIdentifiers.isEmpty else { return nil }
-        print(self.section)
+
         
         view.textLabel?.text = datasource.snapshot().sectionIdentifiers[section]
         
@@ -190,35 +169,23 @@ extension ToDoVC: OptionViewDelegate {
         let toDo = getSelectedToDo(connectedCell: connectedCell)
         
         if case 0 = row {
-           
-            
-            toggleDoneAndSave(on: toDo, with: connectedCell)
-            
+            viewModel.toggleDoneAndSave(on: toDo)
             
         }
         if case 1 = row {
             
             showEditAlert(on: toDo, with: connectedCell)
-
+            
         }
         if case 2 = row {
             
-            removeToDo(toDo)
+            viewModel.removeToDo(toDo)
             
         }
     }
 }
 
-
 extension ToDoVC {
-    
-    private func removeFromLocalRepo(_ toDo: Todo) {
-        guard let index = localRepo.firstIndex(of: toDo) else { return }
-        
-        localRepo.remove(at: index)
-    }
-    
-    
     
     private func showEditAlert(on toDo: Todo, with connectedCell: ToDoCell) {
         var textField: UITextField!
@@ -226,16 +193,8 @@ extension ToDoVC {
         let confirmAction = UIAlertAction(title: "수정", style: .default) { action in
             
             guard let title = textField.text else { return }
-            if let index = self.localRepo.firstIndex(of: toDo) {
-                var editedTodo = toDo
-                editedTodo.title = title
-                self.localRepo[index] = editedTodo
-                self.toDoRepository.editToDo(toDo: editedTodo)
-                self.persistentManager.update(todo: editedTodo)
-                
-            }
-            
-            connectedCell.label.attributedText = NSAttributedString(string: title)
+            self.viewModel.editToDo(title: title, toDo: toDo)
+           
         }
         let cancelAction = UIAlertAction(title: "취소", style: .default)
         alert.addTextField { textField = $0 }
@@ -246,19 +205,7 @@ extension ToDoVC {
     }
     
     private func toggleDoneAndSave(on toDo: Todo, with connectedCell: ToDoCell) {
-        if let index = localRepo.firstIndex(of: toDo) {
-            var editedTodo = toDo
-            editedTodo.done.toggle()
-            editedTodo.doneDate = Date()
-            
-            
-            localRepo[index] = editedTodo
-            toDoRepository.editToDo(toDo: editedTodo)
-            persistentManager.update(todo: editedTodo)
-            
-        }
-        
-        connectedCell.isDone.toggle()
+        viewModel.toggleDoneAndSave(on: toDo)
     }
     
     private func showOptionView(connectedCell: ToDoCell, location: CGPoint) {
@@ -268,12 +215,6 @@ extension ToDoVC {
         optionView.isHidden = false
     }
     
-    private func removeToDo(_ toDo: Todo) {
-        toDoRepository.removeToDo(toDo)
-        removeFromLocalRepo(toDo)
-        persistentManager.delete(todo: toDo)
-    }
-    
     private func getSelectedToDo(connectedCell: ToDoCell) -> Todo {
         guard let index = self.tableView.indexPath(for: connectedCell) else { fatalError( "There is no such Todo") }
         let toDo = datasource.snapshot().itemIdentifiers(inSection: datasource.snapshot().sectionIdentifiers[index.section])[index.row]
@@ -281,4 +222,10 @@ extension ToDoVC {
     }
 }
 
-
+extension ToDoVC: ToDoViewModelDelegate {
+    func localRepoUpdated() {
+        applySnapShot()
+    }
+    
+    
+}

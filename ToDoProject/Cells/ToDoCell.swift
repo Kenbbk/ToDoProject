@@ -17,7 +17,7 @@ class ToDoCell: UITableViewCell {
     
     var isDone = false {
         didSet {
-            
+
             if isDone {
                 label.attributedText = label.attributedText?.strikeThrough()
                 optionImageView.tintColor = .systemGreen
@@ -27,6 +27,16 @@ class ToDoCell: UITableViewCell {
             }
         }
     }
+    
+//    var isDone: Bool {
+//        get {
+//
+//        }
+//
+//        set {
+//
+//        }
+//    }
     
     static let identifier = "ToDoCell"
     

@@ -27,9 +27,9 @@ struct Todo: Codable, Equatable, Hashable {
         return lhs.uuid == rhs.uuid
     }
     
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(uuid)
-    }
+//    func hash(into hasher: inout Hasher) {
+//        hasher.combine(uuid)
+//    }
     
 }
 

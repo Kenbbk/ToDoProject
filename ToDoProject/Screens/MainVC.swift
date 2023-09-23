@@ -32,7 +32,7 @@ class MainVC: UIViewController {
         tb.backgroundColor = .clear
         tb.delegate = self
         tb.dataSource = self
-                tb.isScrollEnabled = false
+        tb.isScrollEnabled = false
         return tb
     }()
     
@@ -50,10 +50,9 @@ class MainVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configureUI()
         
+        configureUI()
         loadImage()
-
         
     }
     
@@ -90,7 +89,7 @@ class MainVC: UIViewController {
         configureGradientView()
         configureTableView()
         configureImageView()
-       
+        
     }
     
     private func configureTableView() {

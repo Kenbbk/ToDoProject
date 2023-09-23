@@ -11,7 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
-    private lazy var persistentManager: PersistentManager = UserDefaultService()
+    private lazy var persistentManager: PersistentManager = CoreDataManager()
     
     private lazy var toDoRepository = TodoRepository(persistentManager: persistentManager)
     
@@ -53,7 +53,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     private func makeToDoVC() ->  ToDoVC {
-        return ToDoVC(toDoRepository: toDoRepository, persistentManager: persistentManager)
+        return ToDoVC(viewModel: ToDoViewModel(toDoRepository: toDoRepository, persistentManager: persistentManager))
     }
     
     private func makeDoneVC() -> DoneVC {
