@@ -11,7 +11,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     
-    private lazy var persistentManager: PersistentManager = CoreDataManager()
+    private lazy var persistentManager: PersistentManager = CoreDataManager() //
     
     private lazy var toDoRepository = TodoRepository(persistentManager: persistentManager)
     
